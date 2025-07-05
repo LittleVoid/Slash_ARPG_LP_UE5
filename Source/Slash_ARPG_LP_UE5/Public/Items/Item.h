@@ -20,9 +20,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere ,BlueprintReadWrite, Category ="Sin Parameters")
-	float Amplitude = 0.25f;
+	float Amplitude = 100.25f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sin Parameters")
-	float TimeConstant = 5.f;
+	float TimeConstant = 2.5f;
 
 	UFUNCTION(BlueprintPure)
 	float TransformedSin();
