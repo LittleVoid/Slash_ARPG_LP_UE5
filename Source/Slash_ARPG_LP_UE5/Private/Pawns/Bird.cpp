@@ -48,22 +48,25 @@ void ABird::BeginPlay()
 	
 }
 
+//Old Input System
+//void ABird::MoveForward(float Value)
+//{
+//	if (Controller && (Value != 0.f))
+//	{
+//		FVector  Forward = GetActorForwardVector();
+//		AddMovementInput(Forward, Value);
+//	}
+//}
 
-void ABird::MoveForward(float Value)
-{
-	if (Controller && (Value != 0.f))
-	{
-		FVector  Forward = GetActorForwardVector();
-		AddMovementInput(Forward, Value);
-	}
-}
-
+//New Enhanced InputSystem
 void ABird::Move(const FInputActionValue& Value)
 {
-	const bool CurrentValue = Value.Get<bool>();
-	if (CurrentValue)
+	const float DirecitoinValue = Value.Get<float>();
+
+	if (Controller && (DirecitoinValue != 0.f))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("IA_Move triggered"));
+		FVector  Forward = GetActorForwardVector();
+		AddMovementInput(Forward, DirecitoinValue);
 	}
 }
 
@@ -84,7 +87,7 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	}
 
 
-
+	//Old Input System
 	//PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABird::MoveForward);
 }
 
