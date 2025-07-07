@@ -58,15 +58,16 @@ void ABird::BeginPlay()
 	
 }
 
+/*
 //Old Input System
-//void ABird::MoveForward(float Value)
-//{
-//	if (Controller && (Value != 0.f))
-//	{
-//		FVector  Forward = GetActorForwardVector();
-//		AddMovementInput(Forward, Value);
-//	}
-//}
+void ABird::MoveForward(float Value)
+
+if (Controller && (Value != 0.f))
+{
+FVector  Forward = GetActorForwardVector();
+AddMovementInput(Forward, Value);
+}
+
 
 
 void ABird::Turn(float Value)
@@ -79,16 +80,28 @@ void ABird::LookUp(float Value)
 	AddControllerPitchInput(Value);
 
 }
+*/
 
 //New Enhanced InputSystem
 void ABird::Move(const FInputActionValue& Value)
 {
-	const float DirecitoinValue = Value.Get<float>();
+	const float DirecitionValue = Value.Get<float>();
 
-	if (Controller && (DirecitoinValue != 0.f))
+	if (Controller && (DirecitionValue != 0.f))
 	{
 		FVector  Forward = GetActorForwardVector();
-		AddMovementInput(Forward, DirecitoinValue);
+		AddMovementInput(Forward, DirecitionValue);
+	}
+}
+
+void ABird::Look(const FInputActionValue& Value)
+{
+	const FVector2D LookAxisValue = Value.Get<FVector2D>();
+
+	if (GetController())
+	{
+		AddControllerYawInput(LookAxisValue.X);
+		AddControllerPitchInput(LookAxisValue.Y);
 	}
 }
 
@@ -106,12 +119,15 @@ void ABird::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABird::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABird::Look);
+
 	}
 
-
+	/*
 	//Old Input System
-	//PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABird::MoveForward);
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ABird::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ABird::Turn);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &ABird::LookUp);
+	*/
 }
 

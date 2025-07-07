@@ -24,7 +24,6 @@ public:
 	// Sets default values for this pawn's properties
 	ABird();
 
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
@@ -34,19 +33,23 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	/*
 	//Old InputSystem
 	void MoveForward(float Value);
 	void Turn(float Value);
 	void LookUp(float Value);
-
+	*/
 
 	//New InputSystem
 	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* BirdMappingContext;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* MoveAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* LookAction;
 
 
 private:
