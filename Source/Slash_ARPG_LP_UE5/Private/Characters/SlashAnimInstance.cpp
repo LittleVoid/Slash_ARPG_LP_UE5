@@ -15,7 +15,7 @@ void USlashAnimInstance::NativeInitializeAnimation()
 	SlashCharacter = Cast<ASlashCharacter>(TryGetPawnOwner());
 	if (SlashCharacter)
 	{
-		SlashMovementComponent = SlashCharacter->GetCharacterMovement();
+		SlashCharacterMovement = SlashCharacter->GetCharacterMovement();
 	}
 	
 }
@@ -26,7 +26,8 @@ void USlashAnimInstance::NativeUpdateAnimation(float DeltaTime)
 
 	if (SlashCharacter)
 	{
-		GroundSpeed = UKismetMathLibrary::VSizeXY(SlashMovementComponent->Velocity);
+		GroundSpeed = UKismetMathLibrary::VSizeXY(SlashCharacterMovement->Velocity);
+		IsFalling = SlashCharacterMovement->IsFalling();
 	}
 
 }
