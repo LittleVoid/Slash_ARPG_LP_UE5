@@ -51,6 +51,8 @@ protected:
 	//Callbacks for Input
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Jump(const FInputActionValue& Value);
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* SlashCharacterMappingContext;
@@ -58,6 +60,7 @@ protected:
 	UInputAction* MovementAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* LookAction;
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* JumpAction;
 
 };
