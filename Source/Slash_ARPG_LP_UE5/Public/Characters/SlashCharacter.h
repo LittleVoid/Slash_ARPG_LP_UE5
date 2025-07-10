@@ -52,6 +52,8 @@ protected:
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
+	void Zoom(const FInputActionValue& Value);
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -62,5 +64,15 @@ protected:
 	UInputAction* LookAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* JumpAction;
+
+	//Zoom config
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* ZoomAction;
+	UPROPERTY(EditAnywhere, Category = "Camera Zoom")
+	float ZoomSpeed = 50.0f;
+	UPROPERTY(EditAnywhere, Category = "Camera Zoom")
+	float MinZoom = 150.0f;
+	UPROPERTY(EditAnywhere, Category = "Camera Zoom")
+	float MaxZoom = 600.0f;
 
 };

@@ -83,6 +83,14 @@ void ASlashCharacter::Jump(const FInputActionValue& Value)
 	// Not used yet, right now the ACharacter Jump is in use
 }
 
+void ASlashCharacter::Zoom(const FInputActionValue& Value)
+{
+	float ZoomValue = Value.Get<float>();
+
+	// Adjust spring arm length
+	SpringArm->TargetArmLength = FMath::Clamp(SpringArm->TargetArmLength - ZoomValue * ZoomSpeed, MinZoom, MaxZoom);
+}
+
 void ASlashCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -98,6 +106,8 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Zoom);
+
 
 
 	}
