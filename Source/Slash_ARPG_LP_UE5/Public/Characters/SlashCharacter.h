@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
-
+#include "CharacterTypes.h"
 #include "SlashCharacter.generated.h"
 
 class USpringArmComponent;
@@ -18,6 +18,8 @@ class USlashOverlay;
 class UInputMappingContext;
 class UInputAction;
 
+
+
 UCLASS()
 class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ACharacter
 {
@@ -28,10 +30,18 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+protected:
+	virtual void BeginPlay() override;
 
-	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
-
+	//Callbacks for Input
+	void Move(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
+	void Jump(const FInputActionValue& Value);
+	void Zoom(const FInputActionValue& Value);
+	void Interact(const FInputActionValue& Value);
 private:
+
+	ECharacterState CharacterState = ECharacterState::ESC_Unequipped;
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
@@ -49,17 +59,6 @@ private:
 	AItem* OverlappingItem;
 
 protected:
-	virtual void BeginPlay() override;
-
-	//Callbacks for Input
-	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
-	void Jump(const FInputActionValue& Value);
-	void Zoom(const FInputActionValue& Value);
-	void Interact(const FInputActionValue& Value);
-
-
-
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* SlashCharacterMappingContext;
@@ -82,4 +81,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Camera Zoom")
 	float MaxZoom = 600.0f;
 
+public:
+	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
+	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 };
