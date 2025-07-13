@@ -29,6 +29,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
+
 private:
 
 	UPROPERTY(VisibleAnywhere)
@@ -43,7 +45,8 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Hair)
 	UGroomComponent* Eyebrows;
 
-
+	UPROPERTY(VisibleInstanceOnly, Category = Interact)
+	AItem* OverlappingItem;
 
 protected:
 	virtual void BeginPlay() override;
@@ -53,6 +56,8 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void Jump(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
+	void Interact(const FInputActionValue& Value);
+
 
 
 
@@ -64,6 +69,8 @@ protected:
 	UInputAction* LookAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* JumpAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* InteractAction;
 
 	//Zoom config
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
