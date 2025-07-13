@@ -18,7 +18,7 @@ AItem::AItem()
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(GetRootComponent());
-	Sphere->SetSphereRadius(300.f);
+	Sphere->SetSphereRadius(250.f);
 }
 
 // Called when the game starts or when spawned
@@ -70,8 +70,8 @@ void AItem::Tick(float DeltaTime)
 
 	RunningTime += DeltaTime;
 
-	AddActorWorldRotation(FRotator(0.f, 35.f, 0.f) * DeltaTime);
-	AddActorWorldOffset(FVector(0.f, 0.f, TransformedSin()) * DeltaTime);
+	//AddActorWorldRotation(FRotator(0.f, 35.f, 0.f) * DeltaTime);
+	//AddActorWorldOffset(FVector(0.f, 0.f, TransformedSin()) * DeltaTime);
 
 
 }
