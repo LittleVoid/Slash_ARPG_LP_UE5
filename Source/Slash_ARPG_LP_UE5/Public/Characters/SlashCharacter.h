@@ -41,9 +41,20 @@ protected:
 	void Interact(const FInputActionValue& Value);
 	void Attack(const FInputActionValue& Value);
 
+	//Play montage functions
+
+	void PlayAttackMontage();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+	bool CanAttack();
+
 private:
 
 	ECharacterState CharacterState = ECharacterState::ESC_Unequipped;
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess ="true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
+
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
