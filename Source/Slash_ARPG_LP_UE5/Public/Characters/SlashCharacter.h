@@ -39,6 +39,8 @@ protected:
 	void Jump(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
+	void Attack(const FInputActionValue& Value);
+
 private:
 
 	ECharacterState CharacterState = ECharacterState::ESC_Unequipped;
@@ -70,6 +72,8 @@ protected:
 	UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* InteractAction;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* AttackAction;
 
 	//Zoom config
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -80,6 +84,10 @@ protected:
 	float MinZoom = 150.0f;
 	UPROPERTY(EditAnywhere, Category = "Camera Zoom")
 	float MaxZoom = 600.0f;
+
+	//Animation montages
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackMontage;
 
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
