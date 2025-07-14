@@ -71,9 +71,15 @@ void AItem::Tick(float DeltaTime)
 
 	RunningTime += DeltaTime;
 
-	//AddActorWorldRotation(FRotator(0.f, 35.f, 0.f) * DeltaTime);
-	//AddActorWorldOffset(FVector(0.f, 0.f, TransformedSin()) * DeltaTime);
 
+	//Item HoverEffect
+	if (ItemState == EItemState::EIS_Hovering)
+	{
+		const float ItemRotationSpeed = 35.f;
+		const float ZItemHover = TransformedSin();
+		AddActorWorldRotation(FRotator(0.f, ItemRotationSpeed, 0.f) * DeltaTime);
+		AddActorWorldOffset(FVector(0.f, 0.f, ZItemHover) * DeltaTime);
+	}
 
 }
 
