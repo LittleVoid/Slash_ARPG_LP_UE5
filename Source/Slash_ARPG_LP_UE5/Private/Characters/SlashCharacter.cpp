@@ -103,6 +103,21 @@ void ASlashCharacter::Interact(const FInputActionValue& Value)
 	{
 		OverlappingWeapon->Equip(GetMesh(), FName ("RightHandSocket"));
 		CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
+		OverlappingItem = nullptr;
+		EquippedWeapon = OverlappingWeapon;
+	}
+	else
+	{
+		if (CanDisarm())
+		{
+			PlayWeaponEquipMontage(FName("UnEquipWeapon"));
+			CharacterState = ECharacterState::ESC_Unequipped;
+		}
+		else if (CanArm())
+		{
+			PlayWeaponEquipMontage(FName("EquipWeapon"));
+			CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
+		}
 	}
 }
 
@@ -120,6 +135,19 @@ bool ASlashCharacter::CanAttack()
 	return
 		ActionState		== EActionState::EAS_Unoccupied &&
 		CharacterState	!= ECharacterState::ESC_Unequipped;
+}
+
+bool ASlashCharacter::CanDisarm()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState != ECharacterState::ESC_Unequipped;
+}
+
+bool ASlashCharacter::CanArm()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState == ECharacterState::ESC_Unequipped &&
+		EquippedWeapon;
 }
 
 void ASlashCharacter::PlayAttackMontage()
@@ -146,6 +174,18 @@ void ASlashCharacter::PlayAttackMontage()
 
 }
 
+void ASlashCharacter::PlayWeaponEquipMontage(FName SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && WeaponEquipMontage)
+	{
+		AnimInstance->Montage_Play(WeaponEquipMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, WeaponEquipMontage);
+
+
+	}
+}
+
 
 void ASlashCharacter::AttackEnd()
 {
@@ -170,9 +210,9 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Zoom);
 
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Interact);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ASlashCharacter::Interact);
 
-		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Attack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ASlashCharacter::Attack);
 
 	}
 }
