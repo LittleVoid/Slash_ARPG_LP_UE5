@@ -28,9 +28,14 @@ class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ACharacter
 
 public:
 	ASlashCharacter();
-
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetWeaponCollisionEnabledType(ECollisionEnabled::Type CollisionEnabled);
+
+	
+
 protected:
 	virtual void BeginPlay() override;
 

@@ -46,4 +46,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	USceneComponent* WeaponHitBoxTraceEnd;
 
+public:
+	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponHitBox; }
 };
