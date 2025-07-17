@@ -5,8 +5,14 @@
 #include "Characters/SlashCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
+#include "Components/BoxComponent.h"
 
 
+AWeapon::AWeapon()
+{
+	WeaponHitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponHitBox"));
+	WeaponHitBox->SetupAttachment(GetRootComponent());
+}
 void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 {
 	AttachMeshToSocket(InParent, InSocketName);
