@@ -204,8 +204,6 @@ void ASlashCharacter::PlayWeaponEquipMontage(const FName SectionName)
 	{
 		AnimInstance->Montage_Play(WeaponEquipMontage);
 		AnimInstance->Montage_JumpToSection(SectionName, WeaponEquipMontage);
-
-
 	}
 }
 
@@ -244,6 +242,7 @@ void ASlashCharacter::SetWeaponCollisionEnabledType(ECollisionEnabled::Type Coll
 {
 	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
 	{
+		EquippedWeapon->IgnoreActors.Empty();
 		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
 	}
 }
