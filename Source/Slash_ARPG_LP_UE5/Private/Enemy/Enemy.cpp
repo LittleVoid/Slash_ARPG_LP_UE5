@@ -24,6 +24,17 @@ void AEnemy::BeginPlay()
 	GetMesh()->SetGenerateOverlapEvents(true);
 }
 
+void AEnemy::PlayHitReactMontage(const FName SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && HitReactMontage)
+	{
+		AnimInstance->Montage_Play(HitReactMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, HitReactMontage);
+	}
+
+}
+
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -39,5 +50,6 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 	DRAW_SPHERE_HIT(ImpactPoint, FColor::Red);
+	PlayHitReactMontage(FName("FromLeft"));
 }
 
