@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Slash_ARPG_LP_UE5/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 
 AEnemy::AEnemy()
@@ -53,6 +54,11 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	DRAW_SPHERE_HIT(ImpactPoint, FColor::Red);
 
 	DirectionalHitReact(ImpactPoint);
+
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HitSound, ImpactPoint);
+	}
 
 }
 
