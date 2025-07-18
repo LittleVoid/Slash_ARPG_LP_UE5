@@ -4,6 +4,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Slash_ARPG_LP_UE5/DebugMacros.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 AEnemy::AEnemy()
@@ -51,5 +52,16 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 	DRAW_SPHERE_HIT(ImpactPoint, FColor::Red);
 	PlayHitReactMontage(FName("FromLeft"));
-}
 
+	const FVector Forward = GetActorForwardVector();
+	const FVector ImpactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
+	const FVector ToHit = (ImpactLowered - GetActorLocation()).GetSafeNormal();
+	
+	const double CosTheta = FVector::DotProduct(Forward, ToHit);
+	double Theta = FMath::Acos(CosTheta);
+	Theta = FMath::RadiansToDegrees(Theta);
+
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Forward * 60.f, 5.f, FColor::Red, 5.f);
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + ToHit * 60.f, 5.f, FColor::Red, 5.f);
+
+}
