@@ -8,6 +8,7 @@
 #include "BreakableActor.generated.h"
 
 class UGeometryCollectionComponent;
+class UCapsuleComponent;
 
 UCLASS()
 class SLASH_ARPG_LP_UE5_API ABreakableActor : public AActor, public IHitInterface
@@ -24,7 +25,18 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UGeometryCollectionComponent* GeometryCollection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UCapsuleComponent> Capsule;
+
+private:
+
+	UPROPERTY(EditAnywhere, Category = "Loot")
+	TArray<TSubclassOf<class ATreasure>> TreasureClasses;
+	
+
+	bool bBroken = false;
+
 };

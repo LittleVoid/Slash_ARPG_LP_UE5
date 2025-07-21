@@ -10,7 +10,7 @@
 
 ATreasure::ATreasure() : Super()
 {
-	AItem::Sphere->SetSphereRadius(125.f);
+	AItem::Sphere->SetSphereRadius(75.f);
 }
 
 void ATreasure::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
