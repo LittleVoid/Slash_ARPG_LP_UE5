@@ -14,6 +14,7 @@ enum class EItemState : uint8
 };
 
 class USphereComponent;
+class UNiagaraComponent;
 
 UCLASS()
 class SLASH_ARPG_LP_UE5_API AItem : public AActor
@@ -55,6 +56,10 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* Sphere;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraComponent> EmbersEffect;
+
 
 private:
 
