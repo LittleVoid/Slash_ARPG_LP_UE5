@@ -6,17 +6,13 @@
 #include "Slash_ARPG_LP_UE5/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AttributeComponent.h"
+#include "Components/WidgetComponent.h"
 
 
 AEnemy::AEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-}
-
-void AEnemy::BeginPlay()
-{
-	Super::BeginPlay();
 
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
@@ -24,6 +20,19 @@ void AEnemy::BeginPlay()
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(true);
+
+	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+
+	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealtBar"));
+	HealthBarWidget->SetupAttachment(GetRootComponent());
+
+
+}
+
+void AEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
 }
 
 void AEnemy::PlayHitReactMontage(const FName SectionName)

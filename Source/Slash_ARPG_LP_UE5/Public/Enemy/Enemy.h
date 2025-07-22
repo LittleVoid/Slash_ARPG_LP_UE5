@@ -7,6 +7,8 @@
 #include "Enemy.generated.h"
 
 class UAnimMontage;
+class UAttributeComponent;
+class UWidgetComponent;
 
 UCLASS()
 class SLASH_ARPG_LP_UE5_API AEnemy : public ACharacter, public IHitInterface
@@ -24,6 +26,12 @@ public:
 	void DirectionalHitReact(const FVector& ImpactPoint);
 
 private:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UAttributeComponent> Attributes;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UWidgetComponent> HealthBarWidget;
+
 	// Anim Montages
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
@@ -34,6 +42,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "VisualEffects")
 	UParticleSystem* HitParticles;
+
+
 
 protected:
 	virtual void BeginPlay() override;
