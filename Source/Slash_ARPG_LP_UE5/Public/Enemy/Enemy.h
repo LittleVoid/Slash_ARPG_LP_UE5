@@ -8,7 +8,7 @@
 
 class UAnimMontage;
 class UAttributeComponent;
-class UWidgetComponent;
+class UHealthBarComponent;
 
 UCLASS()
 class SLASH_ARPG_LP_UE5_API AEnemy : public ACharacter, public IHitInterface
@@ -30,7 +30,7 @@ private:
 	TObjectPtr<UAttributeComponent> Attributes;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UWidgetComponent> HealthBarWidget;
+	TObjectPtr<UHealthBarComponent> HealthBarWidget;
 
 	// Anim Montages
 

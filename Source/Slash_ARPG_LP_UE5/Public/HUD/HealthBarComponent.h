@@ -6,6 +6,8 @@
 #include "Components/WidgetComponent.h"
 #include "HealthBarComponent.generated.h"
 
+class UHealthBar;
+
 /**
  * 
  */
@@ -13,5 +15,12 @@ UCLASS()
 class SLASH_ARPG_LP_UE5_API UHealthBarComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
+
+public:
+	void SetHealthPercent(float Percent);
+
+private:
+	UPROPERTY()
+	TObjectPtr<UHealthBar> HealthBarWidget;
 	
 };
