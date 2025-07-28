@@ -37,6 +37,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void CreateFields(const FVector& FieldLocation);
 
+	
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
@@ -57,4 +58,6 @@ private:
 
 public:
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponHitBox; }
+
+	EWieldType GetWieldType() const { return WieldType; }
 };
