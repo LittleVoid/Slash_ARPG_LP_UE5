@@ -94,6 +94,8 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = Weapon)
 	AWeapon* EquippedWeapon;
 
+	UAnimMontage* AttackMontage;
+
 
 protected:
 
@@ -122,7 +124,11 @@ protected:
 
 	//Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* AttackMontage;
+	UAnimMontage* OneHandAttackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* TwoHandAttackMontage;
+
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* WeaponEquipMontage;
 

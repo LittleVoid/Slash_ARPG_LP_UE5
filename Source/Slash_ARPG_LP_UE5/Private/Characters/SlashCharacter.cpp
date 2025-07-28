@@ -101,23 +101,28 @@ void ASlashCharacter::Interact(const FInputActionValue& Value)
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 	if (OverlappingWeapon)
 	{
-		OverlappingWeapon->Equip(GetMesh(), FName ("RightHandSocket"), this, this);
 
 		//CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
 
 		EWieldType Selection = OverlappingWeapon->GetWieldType();
+		FName SocketName;
 
 		switch (Selection)
 		{
 		case EWieldType::EWT_OneHanded:
 			CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
+			SocketName = "RightHandSocket";
+			AttackMontage = OneHandAttackMontage;
 			break;
 		case EWieldType::EWT_TwoHanded:
 			CharacterState = ECharacterState::ESC_ESC_EquippedTwoHanedWeapon;
+			SocketName = "RightHand_TwoHaned_Socket";
+			AttackMontage = TwoHandAttackMontage;
 			break;
 		default:
 			break;
 		}
+		OverlappingWeapon->Equip(GetMesh(), SocketName, this, this);
 
 		OverlappingItem = nullptr;
 		EquippedWeapon = OverlappingWeapon;
