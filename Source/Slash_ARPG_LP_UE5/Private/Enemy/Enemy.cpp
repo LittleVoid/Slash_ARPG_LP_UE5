@@ -3,11 +3,13 @@
 #include "Enemy/Enemy.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Slash_ARPG_LP_UE5/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/AttributeComponent.h"
 #include "HUD/HealthBarComponent.h"
+
 
 
 AEnemy::AEnemy()
@@ -26,7 +28,10 @@ AEnemy::AEnemy()
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealtBar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
-
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 }
 
 void AEnemy::BeginPlay()
