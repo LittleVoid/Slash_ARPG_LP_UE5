@@ -48,7 +48,7 @@ void AEnemy::BeginPlay()
 
 	EnemyController = Cast<AAIController>(GetController());
 
-		if (EnemyController)
+		if (EnemyController && PatrolTarget)
 		{
 			FAIMoveRequest MoveRequest;
 			MoveRequest.SetGoalActor(PatrolTarget);
@@ -106,6 +106,15 @@ void AEnemy::Die()
 	SetLifeSpan(3.f);
 }
 
+bool AEnemy::InTargetRange(AActor* Target, double Radius)
+{
+	const double DistanceToTarget = Target->GetDistanceTo(this);
+	DRAW_SPHERE_SingleFrame(GetActorLocation(), FColor::Red);
+	DRAW_SPHERE_SingleFrame(Target->GetActorLocation(), FColor::Green);
+
+	return DistanceToTarget <= Radius;
+}
+
 void AEnemy::PlayHitReactMontage(const FName SectionName)
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -122,8 +131,7 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (CombatTarget)
 	{
-		const double DistanceToTarget = CombatTarget->GetDistanceTo(this);
-		if (DistanceToTarget > CombatRadius)
+		if (!InTargetRange(CombatTarget, CombatRadius))
 		{
 			CombatTarget = nullptr;
 			if (HealthBarWidget)
@@ -132,16 +140,39 @@ void AEnemy::Tick(float DeltaTime)
 			}
 		}
 
-		if (GEngine)
+	}
+
+	if (PatrolTarget && EnemyController)
+	{
+		if (InTargetRange(PatrolTarget, PatrolRadius))
 		{
-			GEngine->AddOnScreenDebugMessage(
-				-1,
-				0.0f,
-				FColor::Green,
-				FString::Printf(TEXT("Distance to Target: %.2f"), DistanceToTarget)
-			);
+			TArray<AActor*> ValidTargets;
+			for (AActor* Target : PatrolTargets)
+			{
+				if (Target != PatrolTarget)
+				{
+					ValidTargets.AddUnique(Target);
+				}
+			}
+			const int32 NumPatrolTargets = ValidTargets.Num();
+			if (NumPatrolTargets > 0)
+			{
+				const int32 TargetSelection = FMath::RandRange(0, NumPatrolTargets - 1);
+
+
+				//AActor* Target = ValidTargets[TargetSelection];
+				//PatrolTarget = Target;
+				PatrolTarget = ValidTargets[TargetSelection];
+
+				FAIMoveRequest MoveRequest;
+				MoveRequest.SetAcceptanceRadius(15.f);
+				MoveRequest.SetGoalActor(PatrolTarget);
+				EnemyController->MoveTo(MoveRequest);
+				
+			}
 		}
 	}
+
 }
 
 void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
