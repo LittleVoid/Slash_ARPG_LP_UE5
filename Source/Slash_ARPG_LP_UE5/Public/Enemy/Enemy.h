@@ -65,6 +65,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 500.f;
 
+	UPROPERTY(EditAnywhere)
+	double AttackRadius = 150.f;
+
 	/*
 	Navigation
 	*/
@@ -96,6 +99,7 @@ private:
 	EEnemyState EnemyState = EEnemyState::EEA_Patrolling;
 
 	float RunSpeed = 300.f;
+	float WalkSpeed = 125.f;
 
 protected:
 
