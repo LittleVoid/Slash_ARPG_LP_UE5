@@ -19,7 +19,7 @@ AItem::AItem()
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	Sphere->SetupAttachment(GetRootComponent());
-	Sphere->SetSphereRadius(250.f);
+	Sphere->SetSphereRadius(150.f);
 
 	EmbersEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Embers"));
 	EmbersEffect->SetupAttachment(GetRootComponent());
