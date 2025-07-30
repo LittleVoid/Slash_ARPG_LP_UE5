@@ -128,9 +128,6 @@ bool AEnemy::InTargetRange(AActor* Target, double Radius)
 {
 	if (Target == nullptr) return false;
 	const double DistanceToTarget = Target->GetDistanceTo(this);
-	DRAW_SPHERE_SingleFrame(GetActorLocation(), FColor::Red);
-	DRAW_SPHERE_SingleFrame(Target->GetActorLocation(), FColor::Green);
-
 	return DistanceToTarget <= Radius;
 }
 
@@ -177,7 +174,6 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 		{
 			EnemyState = EEnemyState::EES_Chasing;
 			MoveToTarget(CombatTarget);
-			UE_LOG(LogTemp, Warning, TEXT("Pawn seen, Chase Player"));
 		}
 	}
 }
@@ -216,7 +212,6 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EEA_Patrolling;
 		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 		MoveToTarget(PatrolTarget);
-		UE_LOG(LogTemp, Warning, TEXT("Lose Interest"));
 	}
 	else if (!InTargetRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Chasing)
 	{
@@ -224,7 +219,6 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Chasing;
 		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
 		MoveToTarget(CombatTarget);
-		UE_LOG(LogTemp, Warning, TEXT("Chase Player"));
 	}
 	else if (InTargetRange(CombatTarget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)
 	{
@@ -232,7 +226,6 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Attacking;
 		// TODO: Attack Montage
 
-		UE_LOG(LogTemp, Warning, TEXT("Attack"));
 	}
 }
 
@@ -313,6 +306,8 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	}
 
 	CombatTarget = EventInstigator->GetPawn();
-
+	EnemyState = EEnemyState::EES_Chasing;
+	GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+	MoveToTarget(CombatTarget);
 	return DamageAmount;
 }
