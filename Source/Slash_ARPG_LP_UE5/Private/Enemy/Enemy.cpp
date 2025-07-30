@@ -4,6 +4,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Perception/PawnSensingComponent.h"
 #include "Slash_ARPG_LP_UE5/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -34,14 +35,25 @@ AEnemy::AEnemy()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
+	PawnSensing->SetPeripheralVisionAngle(45.f);
+	PawnSensing->SightRadius = 4000.f;
+	PawnSensing->bOnlySensePlayers;
 }
 
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	CheckCombatTarget();
-	CheckPatrolTarget();
+	if (EnemyState > EEnemyState::EEA_Patrolling)
+	{
+		CheckCombatTarget();
+	}
+	else
+	{
+		CheckPatrolTarget();
+	}
 }
 
 void AEnemy::BeginPlay()
@@ -58,6 +70,10 @@ void AEnemy::BeginPlay()
 	
 	MoveToTarget(PatrolTarget);
 	
+	if (PawnSensing)
+	{
+		PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
+	}
 }
 
 void AEnemy::PatrolTimerFinished()
@@ -146,6 +162,20 @@ AActor* AEnemy::ChoosePatrolTarget()
 	}
 
 	return nullptr;
+}
+
+void AEnemy::PawnSeen(APawn* SeenPawn)
+{
+	if (EnemyState == EEnemyState::EES_Chasing) return;
+	if (SeenPawn->ActorHasTag(FName("Player")))
+	{
+		EnemyState = EEnemyState::EES_Chasing;
+		GetWorldTimerManager().ClearTimer(PatrolTimer);
+		GetCharacterMovement()->MaxWalkSpeed = RunSpeed;
+		CombatTarget = SeenPawn;
+		MoveToTarget(CombatTarget);
+		UE_LOG(LogTemp, Warning, TEXT("Seen Player, now chasing"));
+	}
 }
 
 void AEnemy::PlayHitReactMontage(const FName SectionName)

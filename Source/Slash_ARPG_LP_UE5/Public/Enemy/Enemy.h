@@ -4,11 +4,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/HitInterface.h"
+#include "Characters/CharacterTypes.h"
 #include "Enemy.generated.h"
 
 class UAnimMontage;
 class UAttributeComponent;
 class UHealthBarComponent;
+class UPawnSensingComponent;
 
 UCLASS()
 class SLASH_ARPG_LP_UE5_API AEnemy : public ACharacter, public IHitInterface
@@ -32,11 +34,16 @@ public:
 
 
 private:
+
+	/* Components */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAttributeComponent> Attributes;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UHealthBarComponent> HealthBarWidget;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UPawnSensingComponent> PawnSensing;
 
 	// Anim Montages
 
@@ -84,9 +91,14 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 
-	float WaitMax = 10.f
+	float WaitMax = 10.f;
+
+	EEnemyState EnemyState = EEnemyState::EEA_Patrolling;
+
+	float RunSpeed = 300.f;
 
 protected:
+
 	virtual void BeginPlay() override;
 
 	void Die();
@@ -94,6 +106,9 @@ protected:
 	bool InTargetRange(AActor* Target, double Radius);
 	void MoveToTarget(AActor* Target);
 	AActor* ChoosePatrolTarget();
+
+	UFUNCTION()
+	void PawnSeen(APawn* SeenPawn);
 
 	// Play Montages
 
