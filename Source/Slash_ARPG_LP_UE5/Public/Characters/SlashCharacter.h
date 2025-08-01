@@ -2,7 +2,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "BaseCharacter.h"
+
 #include "InputActionValue.h"
 #include "CharacterTypes.h"
 #include "SlashCharacter.generated.h"
@@ -11,7 +12,6 @@ class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
 class AItem;
-class AWeapon;
 class ASoul;
 class ATreasure;
 class UAnimMontage;
@@ -22,7 +22,7 @@ class UInputAction;
 
 
 UCLASS()
-class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ACharacter
+class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -31,8 +31,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable)
-	void SetWeaponCollisionEnabledType(ECollisionEnabled::Type CollisionEnabled);
+	
 
 	
 
@@ -45,16 +44,19 @@ protected:
 	void Jump(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
-	void Attack(const FInputActionValue& Value);
+	void LeftClick(const FInputActionValue& Value);
+
+
+	virtual void Attack() override;
 
 	//Play montage functions
 
-	void PlayAttackMontage();
+	virtual void PlayAttackMontage() override;
 
 
-	UFUNCTION(BlueprintCallable)
-	void AttackEnd();
-	bool CanAttack();
+	
+	virtual void AttackEnd() override;
+	virtual bool CanAttack() override;
 
 	void PlayWeaponEquipMontage(const FName SectionName);
 	bool CanDisarm();
@@ -91,10 +93,6 @@ private:
 	UPROPERTY(VisibleInstanceOnly, Category = Interact)
 	AItem* OverlappingItem;
 
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
-	AWeapon* EquippedWeapon;
-
-	UAnimMontage* AttackMontage;
 
 
 protected:
@@ -110,7 +108,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* InteractAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* AttackAction;
+	UInputAction* LeftMousClick;
 
 	//Zoom config
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
@@ -122,15 +120,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Camera Zoom")
 	float MaxZoom = 600.0f;
 
-	//Animation montages
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* OneHandAttackMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* TwoHandAttackMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* WeaponEquipMontage;
+	
 
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }

@@ -142,7 +142,12 @@ void ASlashCharacter::Interact(const FInputActionValue& Value)
 	}
 }
 
-void ASlashCharacter::Attack(const FInputActionValue& Value)
+void ASlashCharacter::LeftClick(const FInputActionValue& Value)
+{
+	Attack();
+}
+
+void ASlashCharacter::Attack()
 {
 	if (CanAttack())
 	{
@@ -150,6 +155,8 @@ void ASlashCharacter::Attack(const FInputActionValue& Value)
 		ActionState = EActionState::EAS_Attacking;
 	}
 }
+
+
 
 bool ASlashCharacter::CanAttack()
 {
@@ -252,17 +259,9 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ASlashCharacter::Interact);
 
-		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this, &ASlashCharacter::Attack);
+		EnhancedInputComponent->BindAction(LeftMousClick, ETriggerEvent::Started, this, &ASlashCharacter::LeftClick);
 
 	}
 }
 
-void ASlashCharacter::SetWeaponCollisionEnabledType(ECollisionEnabled::Type CollisionEnabled)
-{
-	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
-	{
-		EquippedWeapon->IgnoreActors.Empty();
-		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
-	}
-}
 
