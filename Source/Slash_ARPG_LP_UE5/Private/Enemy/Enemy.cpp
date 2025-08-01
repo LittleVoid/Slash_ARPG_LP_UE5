@@ -145,7 +145,7 @@ void AEnemy::MoveToTarget(AActor* Target)
 
 	FAIMoveRequest MoveRequest;
 	MoveRequest.SetGoalActor(Target);
-	MoveRequest.SetAcceptanceRadius(15.f);
+	MoveRequest.SetAcceptanceRadius(MoveToAcceptRadius);
 	EnemyController->MoveTo(MoveRequest);
 }
 
@@ -167,6 +167,43 @@ AActor* AEnemy::ChoosePatrolTarget()
 	}
 
 	return nullptr;
+}
+
+void AEnemy::Attack()
+{
+	Super::Attack();
+	PlayAttackMontage();
+}
+
+void AEnemy::PlayAttackMontage()
+{
+	Super::PlayAttackMontage();
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && OneHandAttackMontage)
+	{
+
+		AnimInstance->Montage_Play(OneHandAttackMontage);
+		const int32 Selection = FMath::RandRange(0, 2);
+		FName SectionName = FName();
+
+
+		switch (Selection)
+		{
+		case 0:
+			SectionName = FName("Attack_01");
+			break;
+		case 1:
+			SectionName = FName("Attack_02");
+			break;
+		case 2:
+			SectionName = FName("Attack_03");
+			break;
+		default:
+			break;
+		}
+		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+	}
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)
@@ -225,6 +262,7 @@ void AEnemy::CheckCombatTarget()
 		// Inside attack range, attack character
 		EnemyState = EEnemyState::EES_Attacking;
 		// TODO: Attack Montage
+		Attack();
 
 	}
 }

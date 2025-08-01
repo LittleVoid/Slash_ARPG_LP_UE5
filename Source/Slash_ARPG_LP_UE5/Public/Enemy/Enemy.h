@@ -47,7 +47,7 @@ private:
 	double CombatRadius = 500.f;
 
 	UPROPERTY(EditAnywhere)
-	double AttackRadius = 150.f;
+	double AttackRadius = 130.f;
 
 	/*
 	Navigation
@@ -79,6 +79,9 @@ private:
 
 	EEnemyState EnemyState = EEnemyState::EEA_Patrolling;
 
+	UPROPERTY(EditAnywhere)
+	float MoveToAcceptRadius = 50.f;
+
 	float RunSpeed = 300.f;
 	float WalkSpeed = 125.f;
 
@@ -91,6 +94,9 @@ protected:
 	bool InTargetRange(AActor* Target, double Radius);
 	void MoveToTarget(AActor* Target);
 	AActor* ChoosePatrolTarget();
+	virtual void Attack() override;
+	virtual void PlayAttackMontage() override;
+
 
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);
