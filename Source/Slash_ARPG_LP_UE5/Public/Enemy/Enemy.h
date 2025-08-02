@@ -21,7 +21,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void CheckPatrolTarget();
 	void CheckCombatTarget();
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	virtual void Destroyed() override;
@@ -77,13 +78,42 @@ private:
 
 	float WaitMax = 10.f;
 
-	EEnemyState EnemyState = EEnemyState::EEA_Patrolling;
 
 	UPROPERTY(EditAnywhere)
 	float MoveToAcceptRadius = 50.f;
 
+	//AI Behavior
+
+	UPROPERTY(EditAnywhere, Category = "Movement")
 	float RunSpeed = 300.f;
+	UPROPERTY(EditAnywhere, Category = "Movement")
 	float WalkSpeed = 125.f;
+
+	void ShowHealthBar(bool value);
+	void LoseInterest();
+	void ChaseTarget();
+	void StartPatrolling();
+	bool IsOutsideCombatRadius();
+	bool IsInsideAttackRadius();
+	bool IsOutsideAttackRadius();
+	bool IsChasing();
+	bool IsAttacking();
+	bool IsDead();
+	void ClearPatrolTimer();
+	bool IsEngaged();
+
+	//Combat
+	void StartAttackTimer();
+	void ClearAttackTimer();
+
+	FTimerHandle AttackTimer;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float AttackTimerMin = 0.5f;
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float AttackTimerMax = 1.f;
+
+
 
 protected:
 
@@ -96,10 +126,17 @@ protected:
 	AActor* ChoosePatrolTarget();
 	virtual void Attack() override;
 	virtual void PlayAttackMontage() override;
+	virtual bool CanAttack() override;
+	virtual void HandleDamage(float DamageAmount) override;
+
 
 
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);
+
+
+	UPROPERTY(BlueprintReadOnly)
+	EEnemyState EnemyState = EEnemyState::EEA_Patrolling;
 
 
 
