@@ -28,13 +28,10 @@ class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ABaseCharacter
 
 public:
 	ASlashCharacter();
-	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
 	
-
-	
-
 protected:
 	virtual void BeginPlay() override;
 

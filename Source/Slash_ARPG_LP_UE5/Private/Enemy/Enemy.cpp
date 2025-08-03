@@ -65,21 +65,26 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (PawnSensing) PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
+	InitializeEnemy();
+	Tags.Add(FName("Enemy"));
+	AttackMontage = OneHandAttackMontage;
+}
+
+void AEnemy::InitializeEnemy()
+{
 	if (Attributes && HealthBarWidget)
 	{
 		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
-		HealthBarWidget->SetVisibility(false);
 	}
-
 	EnemyController = Cast<AAIController>(GetController());
-	
 	MoveToTarget(PatrolTarget);
-	
-	if (PawnSensing)
-	{
-		PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
-	}
+	HealthBarWidget->SetVisibility(false);
+	SpawnDefaultWeapon();
+}
 
+void AEnemy::SpawnDefaultWeapon()
+{
 	UWorld* World = GetWorld();
 	if (World && WeaponClass)
 	{
@@ -87,8 +92,6 @@ void AEnemy::BeginPlay()
 		DefaultWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		EquippedWeapon = DefaultWeapon;
 	}
-
-	AttackMontage = OneHandAttackMontage;
 }
 
 void AEnemy::PatrolTimerFinished()
@@ -193,7 +196,7 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 		EnemyState != EEnemyState::EES_Dead &&
 		EnemyState != EEnemyState::EES_Chasing &&
 		EnemyState < EEnemyState::EES_Attacking &&
-		SeenPawn->ActorHasTag(FName("Player"));
+		SeenPawn->ActorHasTag(FName("EngageableTarget"));
 
 		if (bShouldChaseTarget)
 		{

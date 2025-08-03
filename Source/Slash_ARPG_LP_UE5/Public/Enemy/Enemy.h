@@ -119,6 +119,10 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	void InitializeEnemy();
+
+	void SpawnDefaultWeapon();
+
 	virtual void Die() override;
 
 	bool InTargetRange(AActor* Target, double Radius);
