@@ -44,6 +44,9 @@ protected:
 	void Jump(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
+	void Arm();
+	void Disarm();
+	void EquipWeapon(AWeapon* OverlappingWeapon);
 	void LeftClick(const FInputActionValue& Value);
 
 
@@ -59,10 +62,10 @@ protected:
 	bool CanArm();
 
 	UFUNCTION(BlueprintCallable)
-	void Disarm();
+	void AttacheWeaponToBack();
 
 	UFUNCTION(BlueprintCallable)
-	void Arm();
+	void AttacheWeaponToHand();
 
 	UFUNCTION(BlueprintCallable)
 	void FinishedEquipping();

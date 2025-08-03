@@ -101,45 +101,57 @@ void ASlashCharacter::Interact(const FInputActionValue& Value)
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 	if (OverlappingWeapon)
 	{
-
-		//CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
-
-		EWieldType Selection = OverlappingWeapon->GetWieldType();
-		FName SocketName;
-
-		switch (Selection)
-		{
-		case EWieldType::EWT_OneHanded:
-			CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
-			AttackMontage = OneHandAttackMontage;
-			break;
-		case EWieldType::EWT_TwoHanded:
-			CharacterState = ECharacterState::ESC_ESC_EquippedTwoHanedWeapon;
-			AttackMontage = TwoHandAttackMontage;
-			break;
-		default:
-			break;
-		}
-		OverlappingWeapon->Equip(GetMesh(), "RightHandSocket", this, this);
-
-		OverlappingItem = nullptr;
-		EquippedWeapon = OverlappingWeapon;
+		EquipWeapon(OverlappingWeapon);
 	}
 	else
 	{
 		if (CanDisarm())
 		{
-			PlayWeaponEquipMontage(FName("UnEquipWeapon"));
-			CharacterState = ECharacterState::ESC_Unequipped;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Disarm();
 		}
 		else if (CanArm())
 		{
-			PlayWeaponEquipMontage(FName("EquipWeapon"));
-			CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Arm();
 		}
 	}
+}
+
+void ASlashCharacter::Arm()
+{
+	PlayWeaponEquipMontage(FName("EquipWeapon"));
+	CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::Disarm()
+{
+	PlayWeaponEquipMontage(FName("UnEquipWeapon"));
+	CharacterState = ECharacterState::ESC_Unequipped;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void ASlashCharacter::EquipWeapon(AWeapon* OverlappingWeapon)
+{
+	EWieldType Selection = OverlappingWeapon->GetWieldType();
+	FName SocketName;
+
+	switch (Selection)
+	{
+	case EWieldType::EWT_OneHanded:
+		CharacterState = ECharacterState::ESC_EquippedOneHandedWeapon;
+		AttackMontage = OneHandAttackMontage;
+		break;
+	case EWieldType::EWT_TwoHanded:
+		CharacterState = ECharacterState::ESC_ESC_EquippedTwoHanedWeapon;
+		AttackMontage = TwoHandAttackMontage;
+		break;
+	default:
+		break;
+	}
+
+	OverlappingWeapon->Equip(GetMesh(), "RightHandSocket", this, this);
+	OverlappingItem = nullptr;
+	EquippedWeapon = OverlappingWeapon;
 }
 
 void ASlashCharacter::LeftClick(const FInputActionValue& Value)
@@ -180,7 +192,7 @@ bool ASlashCharacter::CanArm()
 		EquippedWeapon;
 }
 
-void ASlashCharacter::Disarm()
+void ASlashCharacter::AttacheWeaponToBack()
 {
 	if (EquippedWeapon)
 	{
@@ -188,7 +200,7 @@ void ASlashCharacter::Disarm()
 	}
 }
 
-void ASlashCharacter::Arm()
+void ASlashCharacter::AttacheWeaponToHand()
 {
 	if (EquippedWeapon)
 	{
