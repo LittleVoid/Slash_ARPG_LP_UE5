@@ -47,7 +47,7 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (IsDead()) return;
 
-	if (EnemyState > EEnemyState::EEA_Patrolling)
+	if (EnemyState > EEnemyState::EES_Patrolling)
 	{
 		CheckCombatTarget();
 	}
@@ -59,7 +59,7 @@ void AEnemy::Tick(float DeltaTime)
 
 bool AEnemy::IsDead()
 {
-	return EnemyState == EEnemyState::EEA_Dead;
+	return EnemyState == EEnemyState::EES_Dead;
 }
 
 void AEnemy::BeginPlay()
@@ -88,6 +88,8 @@ void AEnemy::BeginPlay()
 		DefaultWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		EquippedWeapon = DefaultWeapon;
 	}
+
+	AttackMontage = OneHandAttackMontage;
 }
 
 void AEnemy::PatrolTimerFinished()
@@ -98,44 +100,13 @@ void AEnemy::PatrolTimerFinished()
 
 void AEnemy::Die()
 {
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && DeathMontage)
-	{
-		AnimInstance->Montage_Play(DeathMontage);
-		const int32 Selection = FMath::RandRange(0, 5);
-		FName SectionName = FName();
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Death_01");
-			break;
-		case 1:
-			SectionName = FName("Death_02");
-			break;
-		case 2:
-			SectionName = FName("Death_03");
-			break;
-		case 3:
-			SectionName = FName("Death_04");
-			break;
-		case 4:
-			SectionName = FName("Death_05");
-			break;
-		case 5:
-			SectionName = FName("Death_06");
-			break;
-		default:
-			break;
-		}
-		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
-	}
-
-	if (HealthBarWidget)
-	{
-		HealthBarWidget->SetVisibility(false);
-	}
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	SetLifeSpan(3.f);
+	EnemyState = EEnemyState::EES_Dead;
+	PlayDeathMontage();
+	ClearAttackTimer();
+	ShowHealthBar(false);
+	DisableCapsule();
+	SetLifeSpan(DeathLifeSpan);
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)
@@ -177,40 +148,12 @@ AActor* AEnemy::ChoosePatrolTarget()
 
 void AEnemy::Attack()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Attack"));
 	Super::Attack();
 	PlayAttackMontage();
 }
 
-void AEnemy::PlayAttackMontage()
-{
-	Super::PlayAttackMontage();
 
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && OneHandAttackMontage)
-	{
-
-		AnimInstance->Montage_Play(OneHandAttackMontage);
-		const int32 Selection = FMath::RandRange(0, 2);
-		FName SectionName = FName();
-
-
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Attack_01");
-			break;
-		case 1:
-			SectionName = FName("Attack_02");
-			break;
-		case 2:
-			SectionName = FName("Attack_03");
-			break;
-		default:
-			break;
-		}
-		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
-	}
-}
 
 bool AEnemy::CanAttack()
 {
@@ -232,10 +175,16 @@ void AEnemy::HandleDamage(float DamageAmount)
 	}
 }
 
+int32 AEnemy::PlayDeathMontage()
+{
+	const int32 Selection = Super::PlayDeathMontage();
+	return Selection;
+}
+
 void AEnemy::PawnSeen(APawn* SeenPawn)
 {
 	const bool bShouldChaseTarget =
-		EnemyState != EEnemyState::EEA_Dead &&
+		EnemyState != EEnemyState::EES_Dead &&
 		EnemyState != EEnemyState::EES_Chasing &&
 		EnemyState < EEnemyState::EES_Attacking &&
 		SeenPawn->ActorHasTag(FName("Player"));
@@ -277,16 +226,20 @@ void AEnemy::CheckCombatTarget()
 			StartPatrolling();
 		}
 	}
-	else if (IsOutsideAttackRadius() && IsChasing())
+	else if (IsOutsideAttackRadius() && !IsChasing())
 	{
 		ClearAttackTimer();
 		if (!IsEngaged())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("WannaChase"));
+
 			ChaseTarget();
 		}
 	}
 	else if (CanAttack())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("WannaAttack"));
+
 		StartAttackTimer();
 	}
 }
@@ -298,11 +251,13 @@ bool AEnemy::IsEngaged()
 
 bool AEnemy::IsAttacking()
 {
-	return EnemyState != EEnemyState::EES_Attacking;
+	return EnemyState == EEnemyState::EES_Attacking;
 }
 
 void AEnemy::StartAttackTimer()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Timer"));
+
 	EnemyState = EEnemyState::EES_Attacking;
 	const float AttackTime = FMath::RandRange(AttackTimerMin, AttackTimerMax);
 	GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::Attack, AttackTime);
@@ -320,7 +275,7 @@ bool AEnemy::IsInsideAttackRadius()
 
 bool AEnemy::IsChasing()
 {
-	return EnemyState != EEnemyState::EES_Chasing;
+	return EnemyState == EEnemyState::EES_Chasing;
 }
 
 bool AEnemy::IsOutsideAttackRadius()
@@ -342,7 +297,7 @@ bool AEnemy::IsOutsideCombatRadius()
 
 void AEnemy::StartPatrolling()
 {
-	EnemyState = EEnemyState::EEA_Patrolling;
+	EnemyState = EEnemyState::EES_Patrolling;
 	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	MoveToTarget(PatrolTarget);
 }

@@ -48,7 +48,7 @@ private:
 	double CombatRadius = 500.f;
 
 	UPROPERTY(EditAnywhere)
-	double AttackRadius = 130.f;
+	double AttackRadius = 150.f;
 
 	/*
 	Navigation
@@ -125,18 +125,19 @@ protected:
 	void MoveToTarget(AActor* Target);
 	AActor* ChoosePatrolTarget();
 	virtual void Attack() override;
-	virtual void PlayAttackMontage() override;
 	virtual bool CanAttack() override;
 	virtual void HandleDamage(float DamageAmount) override;
+	virtual int32 PlayDeathMontage() override;
 
-
+	UPROPERTY(EditAnywhere, Category = "Death")
+	float DeathLifeSpan = 8.f;
 
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);
 
 
 	UPROPERTY(BlueprintReadOnly)
-	EEnemyState EnemyState = EEnemyState::EEA_Patrolling;
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 
 
