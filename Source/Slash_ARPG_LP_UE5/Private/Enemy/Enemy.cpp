@@ -23,7 +23,6 @@ AEnemy::AEnemy()
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
-	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 	GetMesh()->SetGenerateOverlapEvents(true);
 
 
@@ -148,7 +147,7 @@ AActor* AEnemy::ChoosePatrolTarget()
 
 void AEnemy::Attack()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Attack"));
+	EnemyState = EEnemyState::EES_Engaged;
 	Super::Attack();
 	PlayAttackMontage();
 }
@@ -160,6 +159,7 @@ bool AEnemy::CanAttack()
 	bool bCanAttack =
 		IsInsideAttackRadius() &&
 		!IsAttacking() &&
+		!IsEngaged() &&
 		!IsDead();
 
 		return bCanAttack;
@@ -179,6 +179,12 @@ int32 AEnemy::PlayDeathMontage()
 {
 	const int32 Selection = Super::PlayDeathMontage();
 	return Selection;
+}
+
+void AEnemy::AttackEnd()
+{
+	EnemyState = EEnemyState::EES_NoState;
+	CheckCombatTarget();
 }
 
 void AEnemy::PawnSeen(APawn* SeenPawn)
@@ -231,14 +237,12 @@ void AEnemy::CheckCombatTarget()
 		ClearAttackTimer();
 		if (!IsEngaged())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("WannaChase"));
 
 			ChaseTarget();
 		}
 	}
 	else if (CanAttack())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("WannaAttack"));
 
 		StartAttackTimer();
 	}
@@ -256,7 +260,6 @@ bool AEnemy::IsAttacking()
 
 void AEnemy::StartAttackTimer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Timer"));
 
 	EnemyState = EEnemyState::EES_Attacking;
 	const float AttackTime = FMath::RandRange(AttackTimerMin, AttackTimerMax);
