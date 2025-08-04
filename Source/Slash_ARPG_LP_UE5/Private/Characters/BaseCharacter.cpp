@@ -2,10 +2,10 @@
 
 
 #include "Characters/BaseCharacter.h"
-#include "Components/AttributeComponent.h"
 #include "Components/BoxComponent.h"
-#include "Components/CapsuleComponent.h"
 #include "Items/Weapons/Weapon.h"
+#include "Components/AttributeComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -21,6 +21,21 @@ void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint)
+{
+	if (IsAlive())
+	{
+		DirectionalHitReact(ImpactPoint);
+	}
+	else
+	{
+		Die();
+	}
+
+	PlayHitSound(ImpactPoint);
+	SpawnHitParticles(ImpactPoint);
 }
 
 void ABaseCharacter::Tick(float DeltaTime)

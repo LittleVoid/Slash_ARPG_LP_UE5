@@ -112,7 +112,7 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);
-	ActorsToIgnore.Add(GetOwner());
+	ActorsToIgnore.AddUnique(GetOwner());
 	for (AActor* Actor : IgnoreActors)
 	{
 		ActorsToIgnore.AddUnique(Actor);
