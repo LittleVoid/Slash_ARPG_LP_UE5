@@ -36,7 +36,6 @@ void ABaseCharacter::GetHit_Implementation(const FVector& ImpactPoint, AActor* H
 
 	PlayHitSound(ImpactPoint);
 	SpawnHitParticles(ImpactPoint);
-	SetWeaponCollisionEnabledType(ECollisionEnabled::NoCollision);
 }
 
 void ABaseCharacter::Tick(float DeltaTime)

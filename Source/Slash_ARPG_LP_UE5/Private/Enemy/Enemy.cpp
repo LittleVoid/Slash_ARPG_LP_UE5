@@ -325,9 +325,9 @@ void AEnemy::ShowHealthBar(bool value)
 
 
 
-void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
+void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 {
-	Super::GetHit_Implementation(ImpactPoint);
+	Super::GetHit_Implementation(ImpactPoint, Hitter);
 
 	if (IsAlive()) ShowHealthBar(true);
 	ClearPatrolTimer();

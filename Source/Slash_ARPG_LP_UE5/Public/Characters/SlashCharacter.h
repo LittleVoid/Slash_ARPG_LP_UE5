@@ -45,7 +45,7 @@ protected:
 	void EquipWeapon(AWeapon* OverlappingWeapon);
 	void LeftClick(const FInputActionValue& Value);
 
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	virtual void Attack() override;
 
 	//Play montage functions
