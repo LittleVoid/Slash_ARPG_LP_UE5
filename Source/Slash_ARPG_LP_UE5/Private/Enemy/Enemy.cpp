@@ -326,6 +326,7 @@ void AEnemy::ShowHealthBar(bool value)
 
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Hit"));
 	ShowHealthBar(true);
 	if (IsAlive())
 	{
