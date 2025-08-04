@@ -169,6 +169,13 @@ void ASlashCharacter::LeftClick(const FInputActionValue& Value)
 	Attack();
 }
 
+void ASlashCharacter::GetHit_Implementation(const FVector& ImpactPoint)
+{
+	Super::GetHit_Implementation(ImpactPoint);
+
+	ActionState = EActionState::EAS_HitReaction;
+}
+
 void ASlashCharacter::Attack()
 {
 	Super::Attack();
@@ -219,6 +226,11 @@ void ASlashCharacter::AttacheWeaponToHand()
 }
 
 void ASlashCharacter::FinishedEquipping()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
+void ASlashCharacter::HitReactEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
 }

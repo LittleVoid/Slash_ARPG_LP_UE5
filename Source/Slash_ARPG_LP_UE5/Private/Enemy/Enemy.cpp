@@ -109,6 +109,7 @@ void AEnemy::Die()
 	DisableCapsule();
 	SetLifeSpan(DeathLifeSpan);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+	SetWeaponCollisionEnabledType(ECollisionEnabled::NoCollision);
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)
@@ -328,7 +329,8 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	Super::GetHit_Implementation(ImpactPoint);
 
-	ShowHealthBar(true);
+	if (IsAlive()) ShowHealthBar(true);
+	ClearPatrolTimer();
 }
 
 
