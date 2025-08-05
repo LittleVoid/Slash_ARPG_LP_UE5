@@ -41,8 +41,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AWeapon>WeaponClass;
 
-	UPROPERTY()
-	TObjectPtr<AActor> CombatTarget;
+	
 
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 1000.f;
@@ -144,7 +143,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
-
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
 
 public:	
 };
