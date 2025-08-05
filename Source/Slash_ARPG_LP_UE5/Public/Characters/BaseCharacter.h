@@ -39,6 +39,7 @@ protected:
 	virtual int32 PlayAttackMontage();
 	virtual int32 PlayDeathMontage();
 	void DisableCapsule();
+	void StopAttackMontage();
 
 
 	virtual bool CanAttack();

@@ -331,6 +331,9 @@ void AEnemy::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 
 	if (IsAlive()) ShowHealthBar(true);
 	ClearPatrolTimer();
+	ClearAttackTimer();
+
+	StopAttackMontage();
 }
 
 
@@ -338,7 +341,16 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 {
 	HandleDamage(DamageAmount);
 	CombatTarget = EventInstigator->GetPawn();
-	ChaseTarget();
+
+	if(IsInsideAttackRadius())
+	{
+		EnemyState = EEnemyState::EES_Attacking;
+	}
+	else if (IsOutsideAttackRadius())
+	{
+		ChaseTarget();
+	}
+
 	return DamageAmount;
 }
 
