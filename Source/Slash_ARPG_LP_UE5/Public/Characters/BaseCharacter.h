@@ -41,6 +41,12 @@ protected:
 	void DisableCapsule();
 	void StopAttackMontage();
 
+	UFUNCTION(BlueprintCallable)
+	FVector GetTranslationWarpTarget();
+
+	UFUNCTION(BlueprintCallable)
+	FVector GetRotationWarpTarget();
+
 
 	virtual bool CanAttack();
 	bool IsAlive();
@@ -80,6 +86,12 @@ protected:
 	/* Components */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAttributeComponent> Attributes;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	TObjectPtr<AActor> CombatTarget;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	double WarpTargetDistance = 35.f;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
