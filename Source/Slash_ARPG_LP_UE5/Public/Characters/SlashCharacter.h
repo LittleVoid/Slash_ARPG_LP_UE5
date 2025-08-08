@@ -77,6 +77,8 @@ private:
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess ="true"))
 	EActionState ActionState = EActionState::EAS_Unoccupied;
 
+	UPROPERTY()
+	USlashOverlay* SlashOverlay;
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
@@ -93,7 +95,7 @@ private:
 	UPROPERTY(VisibleInstanceOnly, Category = Interact)
 	AItem* OverlappingItem;
 
-
+	void InitializeSlashOverlay();
 
 protected:
 

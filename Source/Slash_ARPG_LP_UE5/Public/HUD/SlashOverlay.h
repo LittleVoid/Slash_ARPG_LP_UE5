@@ -16,8 +16,8 @@ class SLASH_ARPG_LP_UE5_API USlashOverlay : public UUserWidget
 
 public:
 
-	void SetHealthBarPerfecnt(float Percent);
-	void SetStaminaBarPerfecnt(float Percent);
+	void SetHealthBarPercent(float Percent);
+	void SetStaminaBarPercent(float Percent);
 	void SetGold(int32 Gold);
 	void SetSouls(int32 Souls);
 

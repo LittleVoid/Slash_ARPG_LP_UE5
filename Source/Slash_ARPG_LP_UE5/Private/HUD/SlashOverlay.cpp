@@ -6,7 +6,7 @@
 #include "Components/TextBlock.h"
 
 
-void USlashOverlay::SetHealthBarPerfecnt(float Percent)
+void USlashOverlay::SetHealthBarPercent(float Percent)
 {
 	if (HealthProgressBar)
 	{
@@ -14,7 +14,7 @@ void USlashOverlay::SetHealthBarPerfecnt(float Percent)
 	}
 }
 
-void USlashOverlay::SetStaminaBarPerfecnt(float Percent)
+void USlashOverlay::SetStaminaBarPercent(float Percent)
 {
 	if (StaminaProgressBar)
 	{

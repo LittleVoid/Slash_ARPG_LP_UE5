@@ -20,6 +20,9 @@ protected:
 
 	virtual void BeginPlay() override;
 
+public:
+	FORCEINLINE USlashOverlay* GetSlashOverlay() const { return SlashOverlay; }
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Slash")
 	TSubclassOf<USlashOverlay> SlashOverlayClass;
