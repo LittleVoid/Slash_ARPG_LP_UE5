@@ -29,7 +29,9 @@ class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ABaseCharacter
 public:
 	ASlashCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void Jump() override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 
 
 	
@@ -39,7 +41,6 @@ protected:
 	//Callbacks for Input
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Jump(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
 	void Arm();
@@ -95,7 +96,9 @@ private:
 	UPROPERTY(VisibleInstanceOnly, Category = Interact)
 	AItem* OverlappingItem;
 
+	bool IsUnoccupied();
 	void InitializeSlashOverlay();
+	void SetHUDHealth();
 
 protected:
 
