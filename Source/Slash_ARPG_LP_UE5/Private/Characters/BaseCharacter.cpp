@@ -57,7 +57,10 @@ void ABaseCharacter::SetWeaponCollisionEnabledType(ECollisionEnabled::Type Colli
 
 void ABaseCharacter::Attack()
 {
-
+	if (CombatTarget && CombatTarget->ActorHasTag(FName("Dead")))
+	{
+		CombatTarget = nullptr;
+	}
 }
 
 int32 ABaseCharacter::PlayAttackMontage()
@@ -130,6 +133,7 @@ void ABaseCharacter::AttackEnd()
 
 void ABaseCharacter::Die()
 {
+	Tags.Add(FName("Dead"));
 	PlayDeathMontage();
 }
 
