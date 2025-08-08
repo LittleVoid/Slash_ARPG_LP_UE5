@@ -130,7 +130,6 @@ protected:
 	virtual void Attack() override;
 	virtual bool CanAttack() override;
 	virtual void HandleDamage(float DamageAmount) override;
-	virtual int32 PlayDeathMontage() override;
 	virtual void AttackEnd() override;
 
 	UPROPERTY(EditAnywhere, Category = "Death")

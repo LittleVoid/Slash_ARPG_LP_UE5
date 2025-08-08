@@ -67,7 +67,8 @@ int32 ABaseCharacter::PlayAttackMontage()
 
 int32 ABaseCharacter::PlayDeathMontage()
 {
-	return PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+	const int32 Selection = PlayRandomMontageSection(DeathMontage, DeathMontageSections);
+	return Selection;
 }
 
 void ABaseCharacter::DisableCapsule()
@@ -106,6 +107,11 @@ FVector ABaseCharacter::GetRotationWarpTarget()
 	return FVector();
 }
 
+void ABaseCharacter::DisableMeshCollision()
+{
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
 
 bool ABaseCharacter::CanAttack()
 {
@@ -124,7 +130,7 @@ void ABaseCharacter::AttackEnd()
 
 void ABaseCharacter::Die()
 {
-
+	PlayDeathMontage();
 }
 
 void ABaseCharacter::PlayHitReactMontage(const FName SectionName)

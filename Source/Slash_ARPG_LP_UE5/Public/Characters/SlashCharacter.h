@@ -48,6 +48,8 @@ protected:
 	void EquipWeapon(AWeapon* OverlappingWeapon);
 	void LeftClick(const FInputActionValue& Value);
 
+	virtual void Die() override;
+
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	virtual void Attack() override;
 
@@ -130,4 +132,5 @@ protected:
 public:
 	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
+	FORCEINLINE EActionState GetActionState() const { return ActionState; }
 };
