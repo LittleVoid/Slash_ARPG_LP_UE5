@@ -28,4 +28,5 @@ public:
 
 	virtual void SetOverlappingItem(AItem* Item);
 	virtual void AddSouls(ASoul* Soul);
+	virtual void AddGold(class ATreasure* Treasure);
 };

@@ -54,6 +54,7 @@ protected:
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls(ASoul* Soul) override;
+	virtual void AddGold(ATreasure* Treasure) override;
 	virtual void Attack() override;
 
 	//Play montage functions

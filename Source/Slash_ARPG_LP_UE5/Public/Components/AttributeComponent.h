@@ -26,10 +26,23 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
 	float MaxHealth;
 
+	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
+	int32 Gold;
+
+	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
+	int32 Souls;
+
 public:
 
 	void ReceiveDamage(float Damage);
 	float GetHealthPercent();
 	bool IsAlive();
+	void AddSouls(int32 NumberofSouls);
+	void AddGold(int32 NumberofGold);
+
+
+	FORCEINLINE int32 GetGold() const { return Gold;  }
+	FORCEINLINE int32 GetSouls() const { return Souls; }
+
 		
 };
