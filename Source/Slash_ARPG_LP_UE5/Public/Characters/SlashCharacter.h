@@ -6,6 +6,7 @@
 
 #include "InputActionValue.h"
 #include "CharacterTypes.h"
+#include "Interfaces/PickupInterface.h"
 #include "SlashCharacter.generated.h"
 
 class USpringArmComponent;
@@ -22,7 +23,7 @@ class UInputAction;
 
 
 UCLASS()
-class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ABaseCharacter
+class SLASH_ARPG_LP_UE5_API ASlashCharacter : public ABaseCharacter, public IPickupInterface
 {
 	GENERATED_BODY()
 
@@ -51,6 +52,8 @@ protected:
 	virtual void Die() override;
 
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;
+	virtual void SetOverlappingItem(AItem* Item) override;
+	virtual void AddSouls(ASoul* Soul) override;
 	virtual void Attack() override;
 
 	//Play montage functions
@@ -130,7 +133,6 @@ protected:
 	
 
 public:
-	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 	FORCEINLINE EActionState GetActionState() const { return ActionState; }
 };
