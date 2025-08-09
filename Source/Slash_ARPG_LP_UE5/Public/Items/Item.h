@@ -59,7 +59,7 @@ protected:
 	USphereComponent* Sphere;
 
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<UNiagaraComponent> EmbersEffect;
+	TObjectPtr<UNiagaraComponent> ItemEffect;
 
 
 
