@@ -12,6 +12,8 @@
 #include "AIController.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Items/Weapons/Weapon.h"
+#include "Items/Soul.h"
+
 
 
 
@@ -111,6 +113,24 @@ void AEnemy::Die()
 	SetLifeSpan(DeathLifeSpan);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	SetWeaponCollisionEnabledType(ECollisionEnabled::NoCollision);
+	SpawnSoul();
+}
+
+void AEnemy::SpawnSoul()
+{
+	UWorld* World = GetWorld();
+	if (World && SoulClass && Attributes)
+	{
+		FVector SpawnLocation = GetActorLocation() + FVector(0.f, 0.f, 75.f);
+		FTransform SpawnTransform(GetActorRotation(), SpawnLocation);
+
+		ASoul* SpawnedSoul = World->SpawnActorDeferred<ASoul>(SoulClass, SpawnTransform);
+		if (SpawnedSoul)
+		{
+			SpawnedSoul->SetSouls(Attributes->GetSouls());
+			SpawnedSoul->FinishSpawning(SpawnTransform);
+		}
+	}
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)

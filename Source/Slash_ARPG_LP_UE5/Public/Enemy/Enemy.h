@@ -9,6 +9,7 @@
 class UHealthBarComponent;
 class UPawnSensingComponent;
 class AWeapon;
+class ASoul;
 
 UCLASS()
 class SLASH_ARPG_LP_UE5_API AEnemy : public ABaseCharacter
@@ -124,6 +125,8 @@ protected:
 
 	virtual void Die() override;
 
+	void SpawnSoul();
+
 	bool InTargetRange(AActor* Target, double Radius);
 	void MoveToTarget(AActor* Target);
 	AActor* ChoosePatrolTarget();
@@ -142,6 +145,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TSubclassOf<ASoul> SoulClass;
 	
 
 public:	
