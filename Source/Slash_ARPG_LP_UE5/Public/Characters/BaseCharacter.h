@@ -39,6 +39,7 @@ protected:
 	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);
 	virtual int32 PlayAttackMontage();
 	virtual int32 PlayDeathMontage();
+	virtual void PlayDodgeRollMontage();
 	void DisableCapsule();
 	void StopAttackMontage();
 
@@ -57,6 +58,9 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void DodgingEnd();
+
 	//Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* OneHandAttackMontage;
@@ -74,6 +78,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* DeathMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* DodgeRollMontage;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TArray<FName> DeathMontageSections;

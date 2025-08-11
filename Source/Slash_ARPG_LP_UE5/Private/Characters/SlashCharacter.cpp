@@ -130,6 +130,13 @@ void ASlashCharacter::Interact(const FInputActionValue& Value)
 	}
 }
 
+void ASlashCharacter::DodgeRoll(const FInputActionValue& Value)
+{
+	if (ActionState != EActionState::EAS_Unoccupied) return;
+	PlayDodgeRollMontage();
+	ActionState = EActionState::EAS_Dodging;
+}
+
 void ASlashCharacter::Arm()
 {
 	PlayWeaponEquipMontage(FName("EquipWeapon"));
@@ -311,6 +318,13 @@ void ASlashCharacter::AttackEnd()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
+void ASlashCharacter::DodgingEnd()
+{
+	Super::DodgingEnd();
+
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 
 
 void ASlashCharacter::Jump()
@@ -352,12 +366,10 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Look);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Jump);
-
 		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &ASlashCharacter::Zoom);
-
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ASlashCharacter::Interact);
-
 		EnhancedInputComponent->BindAction(LeftMousClick, ETriggerEvent::Started, this, &ASlashCharacter::LeftClick);
+		EnhancedInputComponent->BindAction(DodgeRollAktion, ETriggerEvent::Started, this, &ASlashCharacter::DodgeRoll);
 
 	}
 }

@@ -74,6 +74,11 @@ int32 ABaseCharacter::PlayDeathMontage()
 	return Selection;
 }
 
+void ABaseCharacter::PlayDodgeRollMontage()
+{
+	PlayMontageSection(DodgeRollMontage, FName("Default"));
+}
+
 void ABaseCharacter::DisableCapsule()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -129,6 +134,10 @@ bool ABaseCharacter::IsAlive()
 void ABaseCharacter::AttackEnd()
 {
 
+}
+
+void ABaseCharacter::DodgingEnd()
+{
 }
 
 void ABaseCharacter::Die()

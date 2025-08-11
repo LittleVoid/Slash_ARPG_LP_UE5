@@ -44,6 +44,7 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void Zoom(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
+	void DodgeRoll(const FInputActionValue& Value);
 	void Arm();
 	void Disarm();
 	void EquipWeapon(AWeapon* OverlappingWeapon);
@@ -60,6 +61,7 @@ protected:
 	//Play montage functions
 	
 	virtual void AttackEnd() override;
+	virtual void DodgingEnd() override;
 	virtual bool CanAttack() override;
 
 	void PlayWeaponEquipMontage(const FName SectionName);
@@ -120,6 +122,8 @@ protected:
 	UInputAction* InteractAction;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* LeftMousClick;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* DodgeRollAktion;
 
 	//Zoom config
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
