@@ -23,7 +23,7 @@
 
 ASlashCharacter::ASlashCharacter()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -132,9 +132,26 @@ void ASlashCharacter::Interact(const FInputActionValue& Value)
 
 void ASlashCharacter::DodgeRoll(const FInputActionValue& Value)
 {
-	if (ActionState != EActionState::EAS_Unoccupied) return;
+	if (IsOccupied() || !HasEnoughStamina()) return;
+	
 	PlayDodgeRollMontage();
 	ActionState = EActionState::EAS_Dodging;
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->UseStamina(Attributes->GetDodgeRollCost());
+		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
+	}
+
+}
+
+bool ASlashCharacter::HasEnoughStamina()
+{
+	return Attributes && Attributes->GetStamina() >= Attributes->GetDodgeRollCost();
+}
+
+bool ASlashCharacter::IsOccupied()
+{
+	return ActionState != EActionState::EAS_Unoccupied;
 }
 
 void ASlashCharacter::Arm()
@@ -320,6 +337,7 @@ void ASlashCharacter::AttackEnd()
 
 void ASlashCharacter::DodgingEnd()
 {
+	
 	Super::DodgingEnd();
 
 	ActionState = EActionState::EAS_Unoccupied;
@@ -352,6 +370,17 @@ void ASlashCharacter::SetHUDHealth()
 	if (SlashOverlay && Attributes)
 	{
 		SlashOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());
+	}
+}
+
+void ASlashCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->RegenStamina(DeltaTime);
+		SlashOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
 	}
 }
 

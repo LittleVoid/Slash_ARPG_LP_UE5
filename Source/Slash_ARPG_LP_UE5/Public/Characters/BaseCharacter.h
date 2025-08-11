@@ -61,6 +61,8 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void DodgingEnd();
 
+	
+
 	//Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* OneHandAttackMontage;
