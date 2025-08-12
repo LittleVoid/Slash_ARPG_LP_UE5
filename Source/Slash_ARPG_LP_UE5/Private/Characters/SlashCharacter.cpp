@@ -55,6 +55,13 @@ ASlashCharacter::ASlashCharacter()
 	Eyebrows = CreateDefaultSubobject<UGroomComponent>(TEXT("Eyebrows"));
 	Eyebrows->SetupAttachment(GetMesh());
 	Eyebrows->AttachmentName = FString("head");
+
+	//HealPotion
+
+	PotionMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PotionMeshComp"));
+	PotionMeshComp->SetupAttachment(GetMesh());
+	PotionMeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	PotionMeshComp->SetVisibility(false);
 }
 
 void ASlashCharacter::BeginPlay()
@@ -72,6 +79,8 @@ void ASlashCharacter::BeginPlay()
 	}
 
 	InitializeSlashOverlay();
+
+
 }
 
 //Input
@@ -309,6 +318,19 @@ void ASlashCharacter::AttacheWeaponToHand()
 	{
 		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
 	}
+}
+
+void ASlashCharacter::AttachePotionToHand()
+{
+	PotionMeshComp->AttachToComponent(GetMesh(),
+		FAttachmentTransformRules::SnapToTargetIncludingScale,
+		TEXT("LeftHandSocket"));
+	PotionMeshComp->SetVisibility(true);
+}
+
+void ASlashCharacter::RemovePotionFromHand()
+{
+	PotionMeshComp->SetVisibility(false);
 }
 
 void ASlashCharacter::FinishedEquipping()

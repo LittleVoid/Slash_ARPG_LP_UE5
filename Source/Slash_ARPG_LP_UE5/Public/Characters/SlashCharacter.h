@@ -82,6 +82,12 @@ protected:
 	void AttacheWeaponToHand();
 
 	UFUNCTION(BlueprintCallable)
+	void AttachePotionToHand();
+
+	UFUNCTION(BlueprintCallable)
+	void RemovePotionFromHand();
+
+	UFUNCTION(BlueprintCallable)
 	void FinishedEquipping();
 
 	UFUNCTION(BlueprintCallable)
@@ -110,6 +116,9 @@ private:
 
 	UPROPERTY(VisibleInstanceOnly, Category = Interact)
 	AItem* OverlappingItem;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* PotionMeshComp;
 
 	bool IsUnoccupied();
 	void InitializeSlashOverlay();
