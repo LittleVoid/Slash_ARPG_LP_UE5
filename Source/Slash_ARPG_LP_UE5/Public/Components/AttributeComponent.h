@@ -41,6 +41,12 @@ private:
 	int32 Souls;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
+	int32 CurrentHealPotion;
+
+	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
+	int32 MaxHealPotion = 3;
+
+	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
 	float DodgeRollStaminaCost = 14;
 
 	UPROPERTY(EditAnywhere, Category = "Actor Attributes")
@@ -49,7 +55,10 @@ private:
 public:
 
 	void ReceiveDamage(float Damage);
+	void Heal(float Heal);
 	void UseStamina(float StaminaCost);
+	void UseHealPotion(int32 Amount);
+
 	float GetHealthPercent();
 	float GetStaminaPercent();
 
@@ -57,12 +66,17 @@ public:
 	bool IsAlive();
 	void AddSouls(int32 NumberofSouls);
 	void AddGold(int32 NumberofGold);
+	void AddHealPotion(int32 Amount);
+
 
 
 	FORCEINLINE int32 GetGold() const { return Gold;  }
 	FORCEINLINE int32 GetSouls() const { return Souls; }
 	FORCEINLINE float GetDodgeRollCost() const { return DodgeRollStaminaCost; }
 	FORCEINLINE float GetStamina()	const { return CurrentStamina; }
+	FORCEINLINE int32 GetHealPotionAmount() const { return CurrentHealPotion; }
+	FORCEINLINE int32 GetMaxHealPotionAmount() const { return MaxHealPotion; }
+
 
 		
 };

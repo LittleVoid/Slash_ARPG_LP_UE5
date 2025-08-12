@@ -15,6 +15,7 @@ class UGroomComponent;
 class AItem;
 class ASoul;
 class ATreasure;
+class AHealPotion;
 class UAnimMontage;
 class USlashOverlay;
 class UInputMappingContext;
@@ -46,6 +47,7 @@ protected:
 	void Zoom(const FInputActionValue& Value);
 	void Interact(const FInputActionValue& Value);
 	void DodgeRoll(const FInputActionValue& Value);
+	void UseHealPotion(const FInputActionValue& Value);
 	bool HasEnoughStamina();
 	bool IsOccupied();
 	void Arm();
@@ -59,12 +61,14 @@ protected:
 	virtual void SetOverlappingItem(AItem* Item) override;
 	virtual void AddSouls(ASoul* Soul) override;
 	virtual void AddGold(ATreasure* Treasure) override;
+	virtual void AddHealPotion(AHealPotion* HealPotion) override;
 	virtual void Attack() override;
 
 	//Play montage functions
 	
 	virtual void AttackEnd() override;
 	virtual void DodgingEnd() override;
+	virtual void UsingItemEnd() override;
 	virtual bool CanAttack() override;
 
 	void PlayWeaponEquipMontage(const FName SectionName);
@@ -127,6 +131,8 @@ protected:
 	UInputAction* LeftMousClick;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* DodgeRollAktion;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* UseHealPotionAction;
 
 	//Zoom config
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)

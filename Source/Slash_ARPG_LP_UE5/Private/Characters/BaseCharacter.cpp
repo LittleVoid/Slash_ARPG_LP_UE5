@@ -79,6 +79,11 @@ void ABaseCharacter::PlayDodgeRollMontage()
 	PlayMontageSection(DodgeRollMontage, FName("Default"));
 }
 
+void ABaseCharacter::PlayUseHealPotionMontage()
+{
+	PlayMontageSection(UseHealPotion, FName("Default"));
+}
+
 void ABaseCharacter::DisableCapsule()
 {
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -138,12 +143,37 @@ void ABaseCharacter::AttackEnd()
 
 void ABaseCharacter::DodgingEnd()
 {
+
+}
+
+void ABaseCharacter::UsingItemEnd()
+{
+
 }
 
 void ABaseCharacter::Die()
 {
 	Tags.Add(FName("Dead"));
 	PlayDeathMontage();
+}
+
+bool ABaseCharacter::HasHealPotions()
+{
+	if (Attributes)
+	{
+		return Attributes->GetHealPotionAmount() > 0;
+	}
+	return false;
+}
+
+bool ABaseCharacter::HasFullHealth()
+{
+	if (Attributes)
+	{
+		return Attributes->GetHealthPercent() == 1;
+	}
+
+	return false;
 }
 
 void ABaseCharacter::PlayHitReactMontage(const FName SectionName)

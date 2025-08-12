@@ -18,7 +18,7 @@
 #include "HUD/SlashOverlay.h"
 #include "Items/Soul.h"
 #include "Items/Treasure.h"
-
+#include "Items/HealPotion.h"
 
 
 ASlashCharacter::ASlashCharacter()
@@ -144,6 +144,21 @@ void ASlashCharacter::DodgeRoll(const FInputActionValue& Value)
 
 }
 
+void ASlashCharacter::UseHealPotion(const FInputActionValue& Value)
+{
+	if (IsOccupied() || !HasHealPotions() || HasFullHealth()) return;
+
+	ActionState = EActionState::EAS_UsingItem;
+	PlayUseHealPotionMontage();
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->UseHealPotion(1);
+		Attributes->Heal(40.f);
+		SetHUDHealth();
+		SlashOverlay->SetHealPotion(Attributes->GetHealPotionAmount());
+	}
+}
+
 bool ASlashCharacter::HasEnoughStamina()
 {
 	return Attributes && Attributes->GetStamina() >= Attributes->GetDodgeRollCost();
@@ -235,6 +250,15 @@ void ASlashCharacter::AddGold(ATreasure* Treasure)
 	{
 		Attributes->AddGold(Treasure->GetGold());
 		SlashOverlay->SetGold(Attributes->GetGold());
+	}
+}
+
+void ASlashCharacter::AddHealPotion(AHealPotion* HealPotion)
+{
+	if (Attributes && SlashOverlay)
+	{
+		Attributes->AddHealPotion(HealPotion->GetHealPotion());
+		SlashOverlay->SetHealPotion(Attributes->GetHealPotionAmount());
 	}
 }
 
@@ -343,6 +367,13 @@ void ASlashCharacter::DodgingEnd()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
+void ASlashCharacter::UsingItemEnd()
+{
+	Super::UsingItemEnd();
+
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 
 
 void ASlashCharacter::Jump()
@@ -399,6 +430,8 @@ void ASlashCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ASlashCharacter::Interact);
 		EnhancedInputComponent->BindAction(LeftMousClick, ETriggerEvent::Started, this, &ASlashCharacter::LeftClick);
 		EnhancedInputComponent->BindAction(DodgeRollAktion, ETriggerEvent::Started, this, &ASlashCharacter::DodgeRoll);
+		EnhancedInputComponent->BindAction(UseHealPotionAction, ETriggerEvent::Started, this, &ASlashCharacter::UseHealPotion);
+
 
 	}
 }

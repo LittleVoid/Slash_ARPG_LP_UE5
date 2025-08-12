@@ -40,6 +40,7 @@ protected:
 	virtual int32 PlayAttackMontage();
 	virtual int32 PlayDeathMontage();
 	virtual void PlayDodgeRollMontage();
+	virtual void PlayUseHealPotionMontage();
 	void DisableCapsule();
 	void StopAttackMontage();
 
@@ -54,6 +55,8 @@ protected:
 	bool IsAlive();
 	void DisableMeshCollision();
 	virtual void Die();
+	virtual bool HasHealPotions();
+	virtual bool HasFullHealth();
 
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();
@@ -61,16 +64,20 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	virtual void DodgingEnd();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void UsingItemEnd();
+
+
 	
 
 	//Animation montages
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* OneHandAttackMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* TwoHandAttackMontage;
 
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* WeaponEquipMontage;
 
 	UAnimMontage* AttackMontage;
@@ -83,6 +90,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Montages")
 	UAnimMontage* DodgeRollMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Montages")
+	UAnimMontage* UseHealPotion;
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	TArray<FName> DeathMontageSections;

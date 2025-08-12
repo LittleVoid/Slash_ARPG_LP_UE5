@@ -22,9 +22,20 @@ void UAttributeComponent::ReceiveDamage(float Damage)
 	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.f, MaxHealth);
 }
 
+void UAttributeComponent::Heal(float Heal)
+{
+	CurrentHealth = FMath::Clamp(CurrentHealth + Heal, 0.f, MaxHealth);
+
+}
+
 void UAttributeComponent::UseStamina(float StaminaCost)
 {
 	CurrentStamina = FMath::Clamp(CurrentStamina - StaminaCost, 0.f, MaxStamina);
+}
+
+void UAttributeComponent::UseHealPotion(int32 Amount)
+{
+	CurrentHealPotion = FMath::Clamp(CurrentHealPotion - Amount, 0.f, MaxHealPotion);
 }
 
 float UAttributeComponent::GetHealthPercent()
@@ -50,6 +61,11 @@ void UAttributeComponent::AddSouls(int32 NumberofSouls)
 void UAttributeComponent::AddGold(int32 NumberofGold)
 {
 	Gold += NumberofGold;
+}
+
+void UAttributeComponent::AddHealPotion(int32 Amount)
+{
+	CurrentHealPotion = FMath::Clamp(CurrentHealPotion + Amount, 0.f, MaxHealPotion);
 }
 
 

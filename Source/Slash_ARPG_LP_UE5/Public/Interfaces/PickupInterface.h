@@ -8,6 +8,8 @@
 
 class AItem;
 class ASoul;
+class ATreasure;
+class AHealPotion;
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
@@ -28,5 +30,7 @@ public:
 
 	virtual void SetOverlappingItem(AItem* Item);
 	virtual void AddSouls(ASoul* Soul);
-	virtual void AddGold(class ATreasure* Treasure);
+	virtual void AddGold(ATreasure* Treasure);
+	virtual void AddHealPotion(AHealPotion* HealPotion);
+
 };

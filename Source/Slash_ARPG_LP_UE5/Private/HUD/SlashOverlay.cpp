@@ -38,3 +38,11 @@ USlashOverlay::SetSouls(int32 Souls)
 		SoulCountText->SetText(FText::AsNumber(Souls));
 	}
 }
+
+void USlashOverlay::SetHealPotion(int32 HealPotions)
+{
+	if (HealPotionCountText)
+	{
+		HealPotionCountText->SetText(FText::AsNumber(HealPotions));
+	}
+}

@@ -20,6 +20,7 @@ public:
 	void SetStaminaBarPercent(float Percent);
 	void SetGold(int32 Gold);
 	void SetSouls(int32 Souls);
+	void SetHealPotion(int32 HealPotions);
 
 
 private:
@@ -37,5 +38,8 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* SoulCountText;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* HealPotionCountText;
 	
 };
