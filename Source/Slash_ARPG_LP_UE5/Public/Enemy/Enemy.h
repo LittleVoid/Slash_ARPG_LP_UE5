@@ -44,10 +44,10 @@ private:
 
 	
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	double CombatRadius = 1000.f;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	double AttackRadius = 150.f;
 
 	/*
@@ -79,7 +79,7 @@ private:
 	float WaitMax = 10.f;
 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	float MoveToAcceptRadius = 50.f;
 
 	//AI Behavior
