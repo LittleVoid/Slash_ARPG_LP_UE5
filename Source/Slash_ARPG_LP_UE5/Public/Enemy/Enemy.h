@@ -142,7 +142,7 @@ protected:
 	void PawnSeen(APawn* SeenPawn);
 
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
